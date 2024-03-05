@@ -1,12 +1,13 @@
 const dbConnection = require('../db/dbConnection')
 const jwt = require('jsonwebtoken')
+const SQLScripts  = require('../db/SQLScripts')
 
 module.exports.userLogin = (req, res) => {
 
     const email = req.query.email
     const pass = req.query.password
 
-    const consulta = "SELECT IDUSER FROM users WHERE user_email = ? and user_password = ? limit 1"
+    const consulta = SQLScripts.scriptVerifyUserPassword
 
     function validateMail(email) {
         // Expresión regular para validar el formato del correo electrónico
@@ -31,7 +32,7 @@ module.exports.userLogin = (req, res) => {
         try {
             dbConnection.query(consulta, [email, pass], (err, results) => {
                 if (err) {
-                    res.send(err)
+                    res.send({statusCode: 400, message:"wrong user/password"})
                 }
                 if (results.length > 0) {
                     userId = results[0].IDUSER
@@ -47,6 +48,7 @@ module.exports.userLogin = (req, res) => {
             })
         } catch (e) {
             console.log("error")
+            res.json({statusCode: 400, message:"wrong user/password"})
         }
     }
     else {
