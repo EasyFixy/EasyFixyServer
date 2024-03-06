@@ -39,7 +39,7 @@ module.exports.userLogin = (req, res) => {
                     const token = jwt.sign({ userId }, "Stack", {
                         expiresIn: '2d'
                     });
-                    console.log(results[0].IDUSER)
+                    
                     res.json({statusCode: 200, message:"en la buena pai",token: token })
                 } else {
                     res.json({statusCode: 400, message:"wrong user/password"})
