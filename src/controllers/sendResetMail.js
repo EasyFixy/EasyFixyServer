@@ -93,7 +93,7 @@ module.exports.sendResetMail = (req, res) => {
             from: '"Olvido de contraseña" <easyfixy26@gmail.com>', // Tu dirección de correo electrónico
             to: email, // Correo electrónico del destinatario
             subject: 'Link de reestablecimiento de correo',
-            text: 'tiene 3 horas para acceder al siquiente link para reestablecer su contraseña http://localhost:5701/forgotPassword?id='+id+'&tempPass='+tempPass
+            text: 'tiene 3 horas para acceder al siquiente link para reestablecer su contraseña http://localhost:5701/newPassword?id='+id+'&tempPass='+tempPass
         };
 
         // Enviar el correo electrónico
