@@ -1,6 +1,6 @@
 const dbConnection = require('../db/dbConnection')
 const jwt = require('jsonwebtoken')
-const SQLScripts  = require('../db/SQLScripts')
+const SQLScripts = require('../db/SQLScripts')
 
 module.exports.userLogin = (req, res) => {
 
@@ -28,30 +28,34 @@ module.exports.userLogin = (req, res) => {
         return false; // Si ninguno de los caracteres especiales está presente
     }
 
-    if (validateMail(email) && validateLength(pass,1,80) && validateSpecialChars(pass)) {
+    if (validateMail(email) && validateLength(pass, 1, 80) && validateSpecialChars(pass)) {
         try {
             dbConnection.query(consulta, [email, pass], (err, results) => {
                 if (err) {
-                    res.send({statusCode: 400, message:"wrong user/password"})
-                }
-                if (results.length > 0) {
-                    userId = results[0].IDUSER
-                    const token = jwt.sign({ userId }, "Stack", {
-                        expiresIn: '2d'
-                    });
-                    
-                    res.json({statusCode: 200, message:"en la buena pai",token: token })
+                    console.log(err)
+                    res.send({ statusCode: 400, message: "wrong user/password" })
                 } else {
-                    res.json({statusCode: 400, message:"wrong user/password"})
+                    if (results && results.length > 0) {
+                        console.log(results)
+                        userId = results[0].IDUSER
+                        const token = jwt.sign({ userId }, "Stack", {
+                            expiresIn: '2d'
+                        });
+
+                        res.json({ statusCode: 200, message: "accede", token: token })
+                    } else {
+                        res.json({ statusCode: 400, message: "wrong user/password" })
+                    }
                 }
+
 
             })
         } catch (e) {
             console.log("error")
-            res.json({statusCode: 400, message:"wrong user/password"})
+            res.json({ statusCode: 400, message: "wrong user/password" })
         }
     }
     else {
-        res.json({statusCode: 400, message:"wrong user/password"})
+        res.json({ statusCode: 400, message: "wrong user/password" })
     }
 }

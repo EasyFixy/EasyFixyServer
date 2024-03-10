@@ -15,7 +15,7 @@ module.exports.sendResetMail = (req, res) => {
     }
 
     function generateRandomString(longitud) {
-        const caracteres = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789.-._+*';
+        const caracteres = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789.-._*';
         let cadenaAleatoria = '';
         const caracteresLength = caracteres.length;
         for (let i = 0; i < longitud; i++) {
@@ -103,7 +103,7 @@ module.exports.sendResetMail = (req, res) => {
                 res.json({statusCode: 400, message:"error" })
             } else {
                 console.log('Correo electrónico enviado:', info.response);
-                res.json({statusCode: 200, message:"setteo exitoso pai" })
+                res.json({statusCode: 200, message:"correo enviado" })
             }
         });
     }

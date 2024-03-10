@@ -53,7 +53,7 @@ module.exports.resetPassword = (req, res) => {
     function verifyTempPass(tempPass, newPassword, id) {
         try {
             dbConnection.query(consultaHoraTemp, [id, tempPass], (err, results) => {
-                console.log(results)
+                console.log(tempPass, results)
                 //console.log(results.length)
                 if (results.length > 0) { // si el usuario no existe en la db
                     if (getTimeDiferenceInHours(new Date(results[0].userTempPasswordChangeTimestamp)) < 3) {
