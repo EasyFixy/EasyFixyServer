@@ -5,8 +5,8 @@ module.exports.resetPassword = (req, res) => {
 
     const consultaHoraTemp = SQLScripts.scriptConsultaHoraCreacionTemporalPassword
     const consultaUpdatePassword = SQLScripts.scriptUpdatePassword
-    const userId = req.query.id
-    const tempPass = req.query.tempPass
+    const userId = req.query.user_id
+    const tempPass = req.query.tempPasswordChangeValue
     const newPassword = req.query.newPassword
 
     function getTimeDiferenceInHours(fecha) {
