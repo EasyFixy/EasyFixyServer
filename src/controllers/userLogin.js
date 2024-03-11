@@ -1,6 +1,7 @@
 const dbConnection = require('../db/dbConnection')
 const jwt = require('jsonwebtoken')
 const SQLScripts = require('../db/SQLScripts')
+const stringValidator = require('../objects/stringValidator')
 
 module.exports.userLogin = (req, res) => {
 
@@ -9,26 +10,7 @@ module.exports.userLogin = (req, res) => {
 
     const consulta = SQLScripts.scriptVerifyUserPassword
 
-    function validateMail(email) {
-        // Expresión regular para validar el formato del correo electrónico
-        const regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-        return regex.test(email);
-    }
-    function validateLength(string, min, max) {
-        return string.length >= min && string.length <= max
-    }
-    function validateSpecialChars(string) {
-        const caracteresEspeciales = ".-_,;{}´¨+-*/!$%&#?¿'";
-        for (let i = 0; i < caracteresEspeciales.length; i++) {
-            if (string.includes(caracteresEspeciales[i])) {
-                return true;
-            }
-        }
-
-        return false; // Si ninguno de los caracteres especiales está presente
-    }
-
-    if (validateMail(email) && validateLength(pass, 1, 80) && validateSpecialChars(pass)) {
+    if (stringValidator.validateMail(email) && stringValidator.validateLength(pass, 1, 80) && stringValidator.validateSpecialChars(pass)) {
         try {
             dbConnection.query(consulta, [email, pass], (err, results) => {
                 if (err) {
@@ -36,9 +18,10 @@ module.exports.userLogin = (req, res) => {
                     res.send({ statusCode: 400, message: "wrong user/password" })
                 } else {
                     if (results && results.length > 0) {
-                        console.log(results)
-                        userId = results[0].IDUSER
-                        const token = jwt.sign({ userId }, "Stack", {
+                        
+                        userId = results[0].userId
+                        
+                        const token = jwt.sign({ userId: userId }, "miclavesecrete", {
                             expiresIn: '2d'
                         });
 
