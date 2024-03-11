@@ -3,14 +3,14 @@ const SQLScripts  = require('../db/SQLScripts')
 
 module.exports.userRegistration = (req, res) => {
 
-    const name = req.query.name
-    const email = req.query.email
-    const password = req.query.password
-    const phoneNumber = req.query.phoneNumber
-    const user_national_id = req.query.user_national_id
-    const user_prefix_national =req.query.user_prefix_national
-    const user_date_of_birth =req.query.user_date_of_birth
-    const user_nationality =req.query.user_nationality
+    const name = req.query.userName
+    const email = req.query.userEmail
+    const password = req.query.userPassword
+    const phoneNumber = req.query.userPhoneNumber
+    const user_national_id = req.query.userNationalId
+    const user_prefix_national =req.query.userPrefixNational
+    const user_date_of_birth =req.query.userDateOfBirth
+    const user_nationality =req.query.userNationality
 
     const consultaInsertarUsuario = SQLScripts.scriptCreateUser
     
