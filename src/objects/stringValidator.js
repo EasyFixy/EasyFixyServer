@@ -15,8 +15,17 @@ const loginValidator = {
             }
         }
         return false; // Si ninguno de los caracteres especiales está presente
+    },
+    deleteLastSubstring: (cadena, subcadena) => {
+        const indice = cadena.lastIndexOf(subcadena);
+        if (indice === -1) {
+            // La subcadena no está presente en la cadena
+            return cadena;
+        } else {
+            // Elimina la última aparición de la subcadena
+            return cadena.substring(0, indice) + cadena.substring(indice + subcadena.length);
+        }
     }
-
 };
 
 module.exports = loginValidator;

@@ -4,7 +4,7 @@ const SQLScripts  = require('../db/SQLScripts')
 
 module.exports.sendResetMail = (req, res) => {
 
-    const email = req.query.email
+    const email = req.query.userEmail
 
     const consultaGetId = SQLScripts.scriptGetUserIdFromUserEmail
     const consultaInsertTempPass = SQLScripts.scriptCreateTemporalPassword

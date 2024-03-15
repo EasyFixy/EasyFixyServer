@@ -5,8 +5,8 @@ const stringValidator = require('../objects/stringValidator')
 
 module.exports.userLogin = (req, res) => {
 
-    const email = req.query.email
-    const pass = req.query.password
+    const email = req.query.userEmail
+    const pass = req.query.userPassword
 
     const consulta = SQLScripts.scriptVerifyUserPassword
 
