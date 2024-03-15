@@ -6,5 +6,7 @@ module.exports =  {
     scriptVerifyUserPassword: "SELECT userId FROM users WHERE userEmail = ? and userPassword = ? limit 1",
     scriptCreateUser: "INSERT INTO `users` (`userName`, `userEmail`, `userPassword`, `userPhoneNumber`, `userNationalId`, `userNationality`, `userPrefixNational`, `userDateOfBirth`, `userMoney`, `userDateOfRegister`) VALUES (?, ?, ?, ?, ?, ?, ?, ?, 0, NOW());",
     scriptCheckEmailRegistered: "SELECT count(userId) as cantidad FROM users where userEmail = ?;",
-    scriptInsertJobOffer: "INSERT INTO `joboffers` (`userId`, `jobOfferDescription`, `jobOfferDateAtCreate`, `jobOfferDateAtWork`, `jobOfferEstimatePrice`, `jobOfferTittle`) VALUES (?, ?, NOW(), ?, ?, ?);"
+    scriptInsertJobOffer: "INSERT INTO `joboffers` (`userId`, `jobOfferDescription`, `jobOfferDateAtCreate`, `jobOfferDateAtWork`, `jobOfferEstimatePrice`, `jobOfferTittle`) VALUES (?, ?, NOW(), ?, ?, ?);",
+    scriptGetLaborCategories: "SELECT laborCategoryId, laborCategoryName FROM easyfixy.laborcategories;",
+    scriptModifyUserInfo: "UPDATE `users` SET `userPhoneNumber` = ?, `userNationality` = ?, `userPrefixNational` = ? WHERE (`userId` = ?);"
 }
