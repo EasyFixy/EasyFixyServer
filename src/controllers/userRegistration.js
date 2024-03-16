@@ -1,5 +1,6 @@
 const dbConnection = require('../db/dbConnection')
-const SQLScripts  = require('../db/SQLScripts')
+const SQLScripts = require('../db/SQLScripts')
+const stringValidator = require('../objects/stringValidator')
 
 module.exports.userRegistration = (req, res) => {
 
@@ -8,41 +9,55 @@ module.exports.userRegistration = (req, res) => {
     const password = req.query.userPassword
     const phoneNumber = req.query.userPhoneNumber
     const user_national_id = req.query.userNationalId
-    const user_prefix_national =req.query.userPrefixNational
-    const user_date_of_birth =req.query.userDateOfBirth
-    const user_nationality =req.query.userNationality
+    const user_prefix_national = req.query.userPrefixNational
+    const user_date_of_birth = req.query.userDateOfBirth
+    const user_nationality = req.query.userNationality
 
     const consultaInsertarUsuario = SQLScripts.scriptCreateUser
-    
-    const consultaVerificarMail = SQLScripts.scriptCheckEmailRegistered
 
-    function validateMail(email) {
-        // Expresión regular para validar el formato del correo electrónico
-        const regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-        return regex.test(email);
+    const consultaVerificarMail = SQLScripts.scriptCheckEmailRegistered
+    const insertEmptyTempData = "INSERT INTO `easyfixy`.`userstempdata` (`userId`, `userTempDataLatitude`, `userTempDataLongitude`, `userTempDataActive`, `userTempDataDate`) VALUES (?, '0', '0', '0', NOW());"
+
+    insertTempData = (resultsUser) => {
+        dbConnection.query(insertEmptyTempData, [resultsUser.insertId], (err, results) => {
+            if (err) {
+                console.log(err)
+                res.send({ statusCode: 400, message: "wrong user/password" })
+            } else {
+                if (results) {
+                    //console.log(results)
+                    res.send({ statusCode: 200, data: {user: resultsUser, tempData: results} })
+                    
+                } else {
+                    
+                    res.json({ statusCode: 400, message: "wrong user/password" })
+                }
+            }
+        })
     }
 
     function alreadyNotExistMail(email) {
         try {
             dbConnection.query(consultaVerificarMail, [email], (err, results) => {
-                if(results[0].cantidad <= 0){ // si el usuario no existe en la db
+                if (results[0].cantidad <= 0) { // si el usuario no existe en la db
                     try {
-                        dbConnection.query(consultaInsertarUsuario, [name, email, password, phoneNumber, user_national_id, user_nationality ,user_prefix_national, user_date_of_birth], (err, results) => {
-                            if(err){
+                        dbConnection.query(consultaInsertarUsuario, [name, email, password, phoneNumber, user_national_id, user_nationality, user_prefix_national, user_date_of_birth], (err, results) => {
+                            if (err) {
                                 res.send({ statusCode: 400, message: "error en db/parametros" })
-                            }else{
-                                res.send({ statusCode: 200, data: results })
+                            } else {
+                                insertTempData(results)
+                                //res.send({ statusCode: 200, data: results })
                             }
-                            
+
                         })
                     } catch (e) {
                         console.log({ statusCode: 400, message: "error en db" })
                         res.send({ statusCode: 400, message: "error en db" })
                     }
-                }else {
+                } else {
                     res.send({ statusCode: 400, message: "user already exists" })
                 }
-            
+
             })
         } catch (e) {
             console.log({ statusCode: 400, message: "error en db" })
@@ -50,27 +65,13 @@ module.exports.userRegistration = (req, res) => {
         }
     }
 
-    function validateLength(string, min, max) {
-        return string.length >= min && string.length <= max
-    }
-
-    function validateSpecialChars(string) {
-        const caracteresEspeciales = ".-_,;{}´¨+-*/!$%&#?¿'";
-        for (let i = 0; i < caracteresEspeciales.length; i++) {
-            if (string.includes(caracteresEspeciales[i])) {
-                return true;
-            }
-        }
-
-        return false; // Si ninguno de los caracteres especiales está presente
-    }
-    
-    if (validateMail(email) && validateLength(password, 1, 80) && 
-        validateSpecialChars(password) && validateLength(name,1,100) &&
-        validateLength(user_nationality,1,5)) {
+    if (stringValidator.validateMail(email) && stringValidator.validateLength(password, 1, 80) &&
+        stringValidator.validateSpecialChars(password) && stringValidator.validateLength(name, 1, 100) &&
+        stringValidator.validateLength(user_nationality, 1, 5)) {
         alreadyNotExistMail(email)
     }
     else {
+        console.log("este")
         res.json({ statusCode: 400, message: "wrong user/password" })
     }
 }
