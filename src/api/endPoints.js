@@ -11,6 +11,7 @@ const { modifyUserInfo } = require('../controllers/modifyUserInfo')
 const { getJobCategories } = require('../controllers/getJobCategories')
 const { getLaborsPerCategories } = require('../controllers/getLaborsPerCategories')
 const { uploadUserSkills } = require('../controllers/uploadUserSkills')
+const { getUserProfile } = require('../controllers/getUserProfile')
 
 router.get('/userRegistration', userRegistration);
 router.get('/userLogin', userLogin);
@@ -19,6 +20,7 @@ router.get('/resetPassword', resetPassword);
 router.get('/createJobOffer', createJobOffer);
 router.get('/modifyUserInfo', modifyUserInfo);
 router.get('/getJobCategories', getJobCategories);
+router.get('/getUserProfile', getUserProfile);
 
 router.post('/createLaboralUserResume', createLaboralUserResume);
 router.post('/getLaborsPerCategories', getLaborsPerCategories);
