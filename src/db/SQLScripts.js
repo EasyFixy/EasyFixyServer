@@ -15,5 +15,7 @@ module.exports =  {
     scriptGetUserMainData: "SELECT userName, userPhoneNumber, userNationalId, userEmail, userNationality, userPrefixNational, TIMESTAMPDIFF(YEAR, userDateOfBirth, CURDATE()) AS edad, TIMESTAMPDIFF(YEAR, userDateOfRegister, CURDATE()) AS 'antiguedadYears', TIMESTAMPDIFF(MONTH, userDateOfRegister, CURDATE()) % 12 AS 'antiguedadMonths' FROM users where userId=?;",
     scriptGetUserSkills: "SELECT skillId, skillName FROM skills where userId = ?;",
     scriptGetUserResumes: "SELECT resumeId, resumeDescription, resumeTimeExperience, resumeTitleLabor FROM resumes where userId = ?;",
-    scriptGetResumeLebors: "SELECT l.laborId, b.laborCategoryId, b.laborName FROM laborsresumes as l join resumes as r on r.resumeId = l.resumeId join labors as b on b.laborId = l.laborId where l.resumeId=?;"
+    scriptGetResumeLebors: "SELECT l.laborId, b.laborCategoryId, b.laborName FROM laborsresumes as l join resumes as r on r.resumeId = l.resumeId join labors as b on b.laborId = l.laborId where l.resumeId=?;",
+    scriptUpdateUserTempDataActivate: "UPDATE `userstempdata` SET `userTempDataLatitude` = ?, `userTempDataLongitude` = ?, `userTempDataActive` = '1', `userTempDataDate` = NOW() WHERE (`userTempDataId` = ?);",
+    scriptUpdateUserTempDataDeactivate: "UPDATE `easyfixy`.`userstempdata` SET `userTempDataActive` = '0', `userTempDataDate` = NOW() WHERE (`userTempDataId` = ?);"
 }
