@@ -1,4 +1,4 @@
-module.exports =  {
+module.exports = {
     scriptConsultaHoraCreacionTemporalPassword: "SELECT userTempPasswordChangeTimestamp FROM usertemppasswordchange WHERE userId= ? and usertemppasswordchangeValue=?;",
     scriptUpdatePassword: "UPDATE `users` SET `userPassword` = ? WHERE (`userId` = ?);",
     scriptGetUserIdFromUserEmail: "SELECT userId FROM users WHERE userEmail = ? limit 1;",
@@ -17,5 +17,32 @@ module.exports =  {
     scriptGetUserResumes: "SELECT resumeId, resumeDescription, resumeTimeExperience, resumeTitleLabor FROM resumes where userId = ?;",
     scriptGetResumeLebors: "SELECT l.laborId, b.laborCategoryId, b.laborName FROM laborsresumes as l join resumes as r on r.resumeId = l.resumeId join labors as b on b.laborId = l.laborId where l.resumeId=?;",
     scriptUpdateUserTempDataActivate: "UPDATE `userstempdata` SET `userTempDataLatitude` = ?, `userTempDataLongitude` = ?, `userTempDataActive` = '1', `userTempDataDate` = NOW() WHERE (`userTempDataId` = ?);",
-    scriptUpdateUserTempDataDeactivate: "UPDATE `easyfixy`.`userstempdata` SET `userTempDataActive` = '0', `userTempDataDate` = NOW() WHERE (`userTempDataId` = ?);"
+    scriptUpdateUserTempDataDeactivate: "UPDATE `easyfixy`.`userstempdata` SET `userTempDataActive` = '0', `userTempDataDate` = NOW() WHERE (`userTempDataId` = ?);",
+    scriptGetBestWorkersForLabors: `select tableWithPonderatedValues.userId, max(tableWithPonderatedValues.calificacionDistancia*0.4 + tableWithPonderatedValues.calificacionMedia *0.6 ) as listingValue from(select firstData.userName, 
+        firstData.userId, 
+        firstData.userTempDataLatitude, 
+        firstData.userTempDataLongitude, 
+        firstData.distanceKm, 
+        CASE
+         WHEN firstData.distanceKm < 1 THEN 5
+         WHEN firstData.distanceKm < 4 THEN 4
+         WHEN firstData.distanceKm < 8 THEN 3
+         WHEN firstData.distanceKm < 15 THEN 2
+         ELSE 1
+     END AS calificacionDistancia,
+         firstData.calificacionMedia, 
+         firstData.resumeTimeExperience, 
+         firstData.laborId from (SELECT u.userName, u.userId, utd.userTempDataLatitude, utd.userTempDataLongitude, (
+         6371 * 
+         acos(
+             cos(radians(utd.userTempDataLatitude)) * 
+             cos(radians(?)) * /*lat 2*/
+             cos(radians(utd.userTempDataLongitude) - radians(?)) + /*lon 2*/
+             sin(radians(utd.userTempDataLatitude)) * 
+             sin(radians(?)) /*lat 2*/
+         )
+     ) AS distanceKm, c.calificacionMedia, r.resumeTimeExperience, l.laborId FROM users as u join userstempdata as utd on utd.userId = u.userId join 
+ (SELECT recipientId, avg(commentCalification) as calificacionMedia FROM comments where commentRol="worker" GROUP BY recipientId) as c on u.userId = c.recipientId join
+ resumes as r on u.userId = r.userId join laborsresumes as l on l.resumeId = r.resumeId where l.laborId in (?) order by utd.userTempDataActive DESC) as firstData) as tableWithPonderatedValues GROUP BY tableWithPonderatedValues.userId
+ ORDER BY listingValue DESC;`
 }
