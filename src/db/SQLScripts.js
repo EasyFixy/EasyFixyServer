@@ -7,7 +7,7 @@ module.exports = {
     scriptCreateUser: "INSERT INTO `users` (`userName`, `userEmail`, `userPassword`, `userPhoneNumber`, `userNationalId`, `userNationality`, `userPrefixNational`, `userDateOfBirth`, `userMoney`, `userDateOfRegister`) VALUES (?, ?, ?, ?, ?, ?, ?, ?, 0, NOW());",
     scriptCheckEmailRegistered: "SELECT count(userId) as cantidad FROM users where userEmail = ?;",
     scriptInsertJobOffer: "INSERT INTO `joboffers` (`userId`, `jobOfferDescription`, `jobOfferDateAtCreate`, `jobOfferDateAtWork`, `jobOfferEstimatePrice`, `jobOfferTittle`) VALUES (?, ?, NOW(), ?, ?, ?);",
-    scriptGetLaborCategories: "SELECT laborCategoryId, laborCategoryName FROM easyfixy.laborcategories;",
+    scriptGetLaborCategories: "SELECT laborCategoryId, laborCategoryName FROM laborcategories;",
     scriptModifyUserInfo: "UPDATE `users` SET `userPhoneNumber` = ?, `userNationality` = ?, `userPrefixNational` = ? WHERE (`userId` = ?);",
     scriptInsertResume: "INSERT INTO `resumes` (`userId`, `resumeDescription`, `resumeTimeExperience`, `resumeTitleLabor`) VALUES (?, ?, ?, ?);",
     scriptInsertLaborResumeRelationship: "INSERT INTO `laborsresumes` (`resumeId`, `laborId`) VALUES (?, ?);",
@@ -17,7 +17,7 @@ module.exports = {
     scriptGetUserResumes: "SELECT resumeId, resumeDescription, resumeTimeExperience, resumeTitleLabor FROM resumes where userId = ?;",
     scriptGetResumeLebors: "SELECT l.laborId, b.laborCategoryId, b.laborName FROM laborsresumes as l join resumes as r on r.resumeId = l.resumeId join labors as b on b.laborId = l.laborId where l.resumeId=?;",
     scriptUpdateUserTempDataActivate: "UPDATE `userstempdata` SET `userTempDataLatitude` = ?, `userTempDataLongitude` = ?, `userTempDataActive` = '1', `userTempDataDate` = NOW() WHERE (`userTempDataId` = ?);",
-    scriptUpdateUserTempDataDeactivate: "UPDATE `easyfixy`.`userstempdata` SET `userTempDataActive` = '0', `userTempDataDate` = NOW() WHERE (`userTempDataId` = ?);",
+    scriptUpdateUserTempDataDeactivate: "UPDATE `userstempdata` SET `userTempDataActive` = '0', `userTempDataDate` = NOW() WHERE (`userTempDataId` = ?);",
     scriptGetBestWorkersForLabors: `select tableWithPonderatedValues.userId, max(tableWithPonderatedValues.calificacionDistancia*0.4 + tableWithPonderatedValues.calificacionMedia *0.6 ) as listingValue from(select firstData.userName, 
         firstData.userId, 
         firstData.userTempDataLatitude, 
@@ -44,5 +44,6 @@ module.exports = {
      ) AS distanceKm, c.calificacionMedia, r.resumeTimeExperience, l.laborId FROM users as u join userstempdata as utd on utd.userId = u.userId join 
  (SELECT recipientId, avg(commentCalification) as calificacionMedia FROM comments where commentRol="worker" GROUP BY recipientId) as c on u.userId = c.recipientId join
  resumes as r on u.userId = r.userId join laborsresumes as l on l.resumeId = r.resumeId where l.laborId in (?) order by utd.userTempDataActive DESC) as firstData) as tableWithPonderatedValues GROUP BY tableWithPonderatedValues.userId
- ORDER BY listingValue DESC;`
+ ORDER BY listingValue DESC;`,
+ scriptInsertUserSkills: "INSERT INTO `skills` (`userId`, `skillName`) VALUES ?;"
 }

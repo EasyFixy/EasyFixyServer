@@ -14,7 +14,8 @@ const { uploadUserSkills } = require('../controllers/uploadUserSkills')
 const { getUserProfile } = require('../controllers/getUserProfile')
 const { updateUserTempData } = require('../controllers/updateUserTempData')
 const { getBestWorkersForLabors } = require('../controllers/getBestWorkersForLabors')
-
+const { insertUserSkills } = require('../controllers/insertUserSkills')
+ 
 router.get('/userRegistration', userRegistration);
 router.get('/userLogin', userLogin);
 router.get('/sendResetMail', sendResetMail);
@@ -29,5 +30,6 @@ router.post('/createLaboralUserResume', createLaboralUserResume);
 router.post('/getLaborsPerCategories', getLaborsPerCategories);
 router.post('/uploadUserSkills', uploadUserSkills);
 router.post('/getBestWorkersForLabors', getBestWorkersForLabors);
+router.post('/insertUserSkills', insertUserSkills);
 
 module.exports = router;
