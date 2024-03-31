@@ -45,5 +45,8 @@ module.exports = {
  (SELECT recipientId, avg(commentCalification) as calificacionMedia FROM comments where commentRol="worker" GROUP BY recipientId) as c on u.userId = c.recipientId join
  resumes as r on u.userId = r.userId join laborsresumes as l on l.resumeId = r.resumeId where l.laborId in (?) order by utd.userTempDataActive DESC) as firstData) as tableWithPonderatedValues GROUP BY tableWithPonderatedValues.userId
  ORDER BY listingValue DESC;`,
- scriptInsertUserSkills: "INSERT INTO `skills` (`userId`, `skillName`) VALUES ?;"
+ scriptInsertUserSkills: "INSERT INTO `skills` (`userId`, `skillName`) VALUES ?;",
+ scriptGetEmployerOfertedOffers: "SELECT f.jobOfferId,f.jobOfferDescription,f.jobOfferDateAtCreate,f.jobOfferDateAtWork,f.jobOfferEstimatePrice,f.jobOfferTittle FROM joboffers f left join jobs j on j.jobOfferId=f.jobOfferId WHERE j.jobId IS NULL and f.userId=?;",
+ scriptGetEmployerPendingJobs: "SELECT f.jobOfferId,f.jobOfferDescription,f.jobOfferDateAtCreate,f.jobOfferDateAtWork,f.jobOfferEstimatePrice,f.jobOfferTittle FROM joboffers f left join jobs j on j.jobOfferId=f.jobOfferId WHERE j.jobStatus = 0 and f.userId=?;",
+ scriptGetEmployerDoneJobs: "SELECT f.jobOfferId,f.jobOfferDescription,f.jobOfferDateAtCreate,f.jobOfferDateAtWork,f.jobOfferEstimatePrice,f.jobOfferTittle FROM joboffers f left join jobs j on j.jobOfferId=f.jobOfferId WHERE j.jobStatus = 1 and f.userId=?;"
 }

@@ -15,7 +15,10 @@ const { getUserProfile } = require('../controllers/getUserProfile')
 const { updateUserTempData } = require('../controllers/updateUserTempData')
 const { getBestWorkersForLabors } = require('../controllers/getBestWorkersForLabors')
 const { insertUserSkills } = require('../controllers/insertUserSkills')
- 
+const { getJobOffertedOffersByEmployer } = require('../controllers/getJobOffertedOffersByEmployer') 
+const { getJobPendingOffersByEmployer } = require('../controllers/getJobPendingOffersByEmployer')
+const { getJobDoneByEmployer } = require('../controllers/getJobDoneByEmployer')
+
 router.get('/userRegistration', userRegistration);
 router.get('/userLogin', userLogin);
 router.get('/sendResetMail', sendResetMail);
@@ -25,6 +28,9 @@ router.get('/modifyUserInfo', modifyUserInfo);
 router.get('/getJobCategories', getJobCategories);
 router.get('/getUserProfile', getUserProfile);
 router.get('/updateUserTempData', updateUserTempData);
+router.get('/getJobOffertedOffersByEmployer', getJobOffertedOffersByEmployer);
+router.get('/getJobPendingOffersByEmployer', getJobPendingOffersByEmployer);
+router.get('/getJobDoneByEmployer', getJobDoneByEmployer);
 
 router.post('/createLaboralUserResume', createLaboralUserResume);
 router.post('/getLaborsPerCategories', getLaborsPerCategories);
