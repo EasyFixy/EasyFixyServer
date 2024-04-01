@@ -13,6 +13,8 @@ module.exports.getUserProfile = (req, res) => {
     const consultaSkills = SQLScripts.scriptGetUserSkills
     const consultaResumes = SQLScripts.scriptGetUserResumes
     const consultaLabors = SQLScripts.scriptGetResumeLebors
+    const consultaComments = "SELECT commentId, senderId, commentCalification, commentMessage, commentDate, calificador.userName as senderName FROM comments c join users calificador on calificador.userId = c.senderId where c.commentRol='employee' and c.recipientId = ? order by c.commentDate DESC;"
+    const consultaCommentsData = "SELECT COUNT(*) AS cantidadTotalComentariosEmployee, AVG(commentCalification) as mediaCalificaciones FROM comments c where c.commentRol='employee' and c.recipientId = ? group by recipientId;"
 
     getUser = (user) => {
         //console.log(user)
@@ -103,12 +105,51 @@ module.exports.getUserProfile = (req, res) => {
         Promise.all(consultas)
             .then(resultados => {
                 //console.log('Agregadas todas', resultados);
-                res.json({ statusCode: 200, message: "retorna", data: user })
+                getComments(user)
             })
             .catch(error => {
                 console.error('error', error);
                 res.json({ statusCode: 400, message: "wrong user/password" })
             });
+    }
+
+    getComments = (user) => {
+        dbConnection.query(consultaComments, [user.userId], (err, results) => {
+            if (err) {
+                //console.log(err)
+                res.send({ statusCode: 400, message: "wrong user/password" })
+            } else {
+                if (results) {
+                    //console.log(results)
+                    user.comments = {}
+                    user.comments.fullComments = results;
+                    getCommentsData(user)
+                    //res.json({ statusCode: 200, message: "modificado", data: results })
+                } else {
+                    res.json({ statusCode: 400, message: "wrong user/password" })
+                }
+            }
+
+        })
+    }
+
+    getCommentsData = (user) => {
+        dbConnection.query(consultaCommentsData, [user.userId], (err, results) => {
+            if (err) {
+                //console.log(err)
+                res.send({ statusCode: 400, message: "wrong user/password" })
+            } else {
+                if (results) {
+                    //console.log(results)
+                    user.comments.data = results;
+                    res.json({ statusCode: 200, message: "retorna", data: user })
+                    //res.json({ statusCode: 200, message: "modificado", data: results })
+                } else {
+                    res.json({ statusCode: 400, message: "wrong user/password" })
+                }
+            }
+
+        })
     }
 
     getUser(user);
