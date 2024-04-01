@@ -13,8 +13,9 @@ module.exports.getUserProfile = (req, res) => {
     const consultaSkills = SQLScripts.scriptGetUserSkills
     const consultaResumes = SQLScripts.scriptGetUserResumes
     const consultaLabors = SQLScripts.scriptGetResumeLebors
-    const consultaComments = "SELECT commentId, senderId, commentCalification, commentMessage, commentDate, calificador.userName as senderName FROM comments c join users calificador on calificador.userId = c.senderId where c.commentRol='employee' and c.recipientId = ? order by c.commentDate DESC;"
-    const consultaCommentsData = "SELECT COUNT(*) AS cantidadTotalComentariosEmployee, AVG(commentCalification) as mediaCalificaciones FROM comments c where c.commentRol='employee' and c.recipientId = ? group by recipientId;"
+    const consultaComments = SQLScripts.scriptGetCommentsByEmployee
+    const consultaCommentsData = SQLScripts.scriptGetResumeComentsByEmployee
+    const consultaGetUserTempData = SQLScripts.scriptGetUserTempData   
 
     getUser = (user) => {
         //console.log(user)
@@ -142,6 +143,25 @@ module.exports.getUserProfile = (req, res) => {
                 if (results) {
                     //console.log(results)
                     user.comments.data = results;
+                    getTempData(user);
+                    //res.json({ statusCode: 200, message: "modificado", data: results })
+                } else {
+                    res.json({ statusCode: 400, message: "wrong user/password" })
+                }
+            }
+
+        })
+    }
+
+    getTempData = (user) => {
+        dbConnection.query(consultaGetUserTempData, [user.userId], (err, results) => {
+            if (err) {
+                //console.log(err)
+                res.send({ statusCode: 400, message: "wrong user/password" })
+            } else {
+                if (results) {
+                    //console.log(results)
+                    user.tempData = results;
                     res.json({ statusCode: 200, message: "retorna", data: user })
                     //res.json({ statusCode: 200, message: "modificado", data: results })
                 } else {
