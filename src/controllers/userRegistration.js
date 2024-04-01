@@ -16,7 +16,7 @@ module.exports.userRegistration = (req, res) => {
     const consultaInsertarUsuario = SQLScripts.scriptCreateUser
 
     const consultaVerificarMail = SQLScripts.scriptCheckEmailRegistered
-    const insertEmptyTempData = "INSERT INTO `easyfixy`.`userstempdata` (`userId`, `userTempDataLatitude`, `userTempDataLongitude`, `userTempDataActive`, `userTempDataDate`) VALUES (?, '0', '0', '0', NOW());"
+    const insertEmptyTempData = SQLScripts.scrpitInsertStarterUserTempData
 
     insertTempData = (resultsUser) => {
         dbConnection.query(insertEmptyTempData, [resultsUser.insertId], (err, results) => {
