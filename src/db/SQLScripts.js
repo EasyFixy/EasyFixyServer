@@ -52,5 +52,6 @@ module.exports = {
  scriptGetCommentsByEmployee: "SELECT commentId, senderId, commentCalification, commentMessage, commentDate, calificador.userName as senderName FROM comments c join users calificador on calificador.userId = c.senderId where c.commentRol='employee' and c.recipientId = ? order by c.commentDate DESC;",
  scriptGetResumeComentsByEmployee: "SELECT COUNT(*) AS cantidadTotalComentariosEmployee, AVG(commentCalification) as mediaCalificaciones FROM comments c where c.commentRol='employee' and c.recipientId = ? group by recipientId;",
  scriptGetUserTempData: "SELECT userTempDataActive, userTempDataLatitude, userTempDataLongitude, userTempDataDate as userTempDataLastUpdate FROM userstempdata where userId = ?;",
- scrpitInsertStarterUserTempData: "INSERT INTO `userstempdata` (`userId`, `userTempDataLatitude`, `userTempDataLongitude`, `userTempDataActive`, `userTempDataDate`) VALUES (?, '0', '0', '0', NOW());"
+ scrpitInsertStarterUserTempData: "INSERT INTO `userstempdata` (`userId`, `userTempDataLatitude`, `userTempDataLongitude`, `userTempDataActive`, `userTempDataDate`) VALUES (?, '0', '0', '0', NOW());",
+ scriptInsertLaborsToJobOffer: "INSERT INTO `jobofferslabors` ( `jobOfferId`, `laborId`) VALUES ?;"
 }

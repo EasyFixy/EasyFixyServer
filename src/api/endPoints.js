@@ -23,7 +23,6 @@ router.get('/userRegistration', userRegistration);
 router.get('/userLogin', userLogin);
 router.get('/sendResetMail', sendResetMail);
 router.get('/resetPassword', resetPassword);
-router.get('/createJobOffer', createJobOffer);
 router.get('/modifyUserInfo', modifyUserInfo);
 router.get('/getJobCategories', getJobCategories);
 router.get('/getUserProfile', getUserProfile);
@@ -37,5 +36,6 @@ router.post('/getLaborsPerCategories', getLaborsPerCategories);
 router.post('/uploadUserSkills', uploadUserSkills);
 router.post('/getBestWorkersForLabors', getBestWorkersForLabors);
 router.post('/insertUserSkills', insertUserSkills);
+router.post('/createJobOffer', createJobOffer);
 
 module.exports = router;

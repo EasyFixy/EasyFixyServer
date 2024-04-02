@@ -5,17 +5,39 @@ const loginValidator = require('../objects/loginValidator')
 
 module.exports.createJobOffer = (req, res) => {
 
-    const job_offer_description = req.query.jobOfferDescription
-    const date_at_work = req.query.jobOfferDateAtWork
-    const stimate_price = req.query.jobOfferStimatePrice
-    const tittle = req.query.jobOfferTittle
-    const token = req.query.token
+    const job_offer_description = req.body.jobOfferDescription
+    const date_at_work = req.body.jobOfferDateAtWork
+    const stimate_price = req.body.jobOfferStimatePrice
+    const tittle = req.body.jobOfferTittle
+    const token = req.body.token
+    const labors = req.body.labors
 
     const consulta = SQLScripts.scriptInsertJobOffer
+    const consultaInsertLabors = SQLScripts.scriptInsertLaborsToJobOffer
 
     createOffer = (user) => {
         console.log(user)
         dbConnection.query(consulta, [user.userId, job_offer_description, date_at_work, stimate_price, tittle], (err, results) => {
+            if (err) {
+                console.log(err)
+                res.send({ statusCode: 400, message: "wrong data" })
+            } else {
+                if (results) {
+                    console.log(results)
+                    insertLabors(results.insertId)
+                } else {
+                    res.json({ statusCode: 400, message: "wrong data" })
+                }
+            }
+
+        })
+    }
+
+    insertLabors = (insertId) => {
+        console.log(insertId)
+        const laboresInsert = labors.map(labor=> [insertId, labor]);
+        console.log(laboresInsert)
+        dbConnection.query(consultaInsertLabors, [laboresInsert], (err, results) => {
             if (err) {
                 console.log(err)
                 res.send({ statusCode: 400, message: "wrong data" })
