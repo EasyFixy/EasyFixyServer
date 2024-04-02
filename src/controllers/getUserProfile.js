@@ -15,17 +15,18 @@ module.exports.getUserProfile = (req, res) => {
     const consultaLabors = SQLScripts.scriptGetResumeLebors
     const consultaComments = SQLScripts.scriptGetCommentsByEmployee
     const consultaCommentsData = SQLScripts.scriptGetResumeComentsByEmployee
-    const consultaGetUserTempData = SQLScripts.scriptGetUserTempData   
+    const consultaGetUserTempData = SQLScripts.scriptGetUserTempData
 
     getUser = (user) => {
         //console.log(user)
         dbConnection.query(consultaMainData, [user.userId], (err, results) => {
             if (err) {
-                //console.log(err)
+                console.log(err)
                 res.send({ statusCode: 400, message: "wrong user/password" })
             } else {
                 if (results) {
                     //console.log(results)
+                    console.log("user")
                     user.mainData = results;
                     getSkills(user);
                     //res.json({ statusCode: 200, message: "modificado", data: results })
@@ -40,11 +41,12 @@ module.exports.getUserProfile = (req, res) => {
     getSkills = (user) => {
         dbConnection.query(consultaSkills, [user.userId], (err, results) => {
             if (err) {
-                //console.log(err)
+                console.log(err)
                 res.send({ statusCode: 400, message: "wrong user/password" })
             } else {
                 if (results) {
                     //console.log(results)
+                    console.log("skills")
                     user.skills = results;
                     getResumes(user);
                     //res.json({ statusCode: 200, message: "modificado", data: results })
@@ -59,11 +61,12 @@ module.exports.getUserProfile = (req, res) => {
     getResumes = (user) => {
         dbConnection.query(consultaResumes, [user.userId], (err, results) => {
             if (err) {
-                //console.log(err)
+                console.log(err)
                 res.send({ statusCode: 400, message: "wrong user/password" })
             } else {
                 if (results) {
                     //console.log(results)
+                    console.log("resumes")
                     user.resumes = results;
                     getLabors(user);
                     //res.json({ statusCode: 200, message: "modificado", data: user })
@@ -79,7 +82,7 @@ module.exports.getUserProfile = (req, res) => {
         return new Promise((resolve, reject) => {
             dbConnection.query(consultaLabors, [resume.resumeId], (err, results) => {
                 if (err) {
-                    //console.log(err)
+                    console.log(err)
                     reject(err);
                 } else {
                     if (results) {
@@ -106,6 +109,7 @@ module.exports.getUserProfile = (req, res) => {
         Promise.all(consultas)
             .then(resultados => {
                 //console.log('Agregadas todas', resultados);
+                console.log("labors")
                 getComments(user)
             })
             .catch(error => {
@@ -117,11 +121,13 @@ module.exports.getUserProfile = (req, res) => {
     getComments = (user) => {
         dbConnection.query(consultaComments, [user.userId], (err, results) => {
             if (err) {
-                //console.log(err)
+                console.log(err)
                 res.send({ statusCode: 400, message: "wrong user/password" })
             } else {
                 if (results) {
                     //console.log(results)
+                    console.log("comments")
+                    console.log(results)
                     user.comments = {}
                     user.comments.fullComments = results;
                     getCommentsData(user)
@@ -137,11 +143,12 @@ module.exports.getUserProfile = (req, res) => {
     getCommentsData = (user) => {
         dbConnection.query(consultaCommentsData, [user.userId], (err, results) => {
             if (err) {
-                //console.log(err)
+                console.log(err)
                 res.send({ statusCode: 400, message: "wrong user/password" })
             } else {
                 if (results) {
                     //console.log(results)
+                    console.log("commentsdata")
                     user.comments.data = results;
                     getTempData(user);
                     //res.json({ statusCode: 200, message: "modificado", data: results })
@@ -156,13 +163,15 @@ module.exports.getUserProfile = (req, res) => {
     getTempData = (user) => {
         dbConnection.query(consultaGetUserTempData, [user.userId], (err, results) => {
             if (err) {
-                //console.log(err)
+                console.log(err)
                 res.send({ statusCode: 400, message: "wrong user/password" })
             } else {
                 if (results) {
                     //console.log(results)
+                    console.log("tempdata")
                     user.tempData = results;
                     res.json({ statusCode: 200, message: "retorna", data: user })
+                    console.log("finaliza")
                     //res.json({ statusCode: 200, message: "modificado", data: results })
                 } else {
                     res.json({ statusCode: 400, message: "wrong user/password" })
@@ -171,7 +180,12 @@ module.exports.getUserProfile = (req, res) => {
 
         })
     }
+    
+    try {
+        getUser(user);
+    } catch {
+        res.json({ statusCode: 400, message: "Error interno" })
+    }
 
-    getUser(user);
 
 }
