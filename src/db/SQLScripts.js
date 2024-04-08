@@ -45,13 +45,52 @@ module.exports = {
  (SELECT recipientId, avg(commentCalification) as calificacionMedia FROM comments where commentRol="worker" GROUP BY recipientId) as c on u.userId = c.recipientId join
  resumes as r on u.userId = r.userId join laborsresumes as l on l.resumeId = r.resumeId where l.laborId in (?) order by utd.userTempDataActive DESC) as firstData) as tableWithPonderatedValues GROUP BY tableWithPonderatedValues.userId
  ORDER BY listingValue DESC;`,
- scriptInsertUserSkills: "INSERT INTO `skills` (`userId`, `skillName`) VALUES ?;",
- scriptGetEmployerOfertedOffers: "SELECT f.jobOfferId,f.jobOfferDescription,f.jobOfferDateAtCreate,f.jobOfferDateAtWork,f.jobOfferEstimatePrice,f.jobOfferTittle FROM joboffers f left join jobs j on j.jobOfferId=f.jobOfferId WHERE j.jobId IS NULL and f.userId=?;",
- scriptGetEmployerPendingJobs: "SELECT f.jobOfferId,f.jobOfferDescription,f.jobOfferDateAtCreate,f.jobOfferDateAtWork,f.jobOfferEstimatePrice,f.jobOfferTittle FROM joboffers f left join jobs j on j.jobOfferId=f.jobOfferId WHERE j.jobStatus = 0 and f.userId=?;",
- scriptGetEmployerDoneJobs: "SELECT f.jobOfferId,f.jobOfferDescription,f.jobOfferDateAtCreate,f.jobOfferDateAtWork,f.jobOfferEstimatePrice,f.jobOfferTittle FROM joboffers f left join jobs j on j.jobOfferId=f.jobOfferId WHERE j.jobStatus = 1 and f.userId=?;",
- scriptGetCommentsByEmployee: "SELECT commentId, senderId, commentCalification, commentMessage, commentDate, calificador.userName as senderName FROM comments c join users calificador on calificador.userId = c.senderId where c.commentRol='worker' and c.recipientId = ? order by c.commentDate DESC;",
- scriptGetResumeComentsByEmployee: "SELECT COUNT(*) AS cantidadTotalComentariosEmployee, AVG(commentCalification) as mediaCalificaciones FROM comments c where c.commentRol='worker' and c.recipientId = ? group by recipientId;",
- scriptGetUserTempData: "SELECT userTempDataActive, userTempDataLatitude, userTempDataLongitude, userTempDataDate as userTempDataLastUpdate FROM userstempdata where userId = ?;",
- scrpitInsertStarterUserTempData: "INSERT INTO `userstempdata` (`userId`, `userTempDataLatitude`, `userTempDataLongitude`, `userTempDataActive`, `userTempDataDate`) VALUES (?, '0', '0', '0', NOW());",
- scriptInsertLaborsToJobOffer: "INSERT INTO `jobofferslabors` ( `jobOfferId`, `laborId`) VALUES ?;"
+    scriptInsertUserSkills: "INSERT INTO `skills` (`userId`, `skillName`) VALUES ?;",
+    scriptGetEmployerOfertedOffers: "SELECT f.jobOfferId,f.jobOfferDescription,f.jobOfferDateAtCreate,f.jobOfferDateAtWork,f.jobOfferEstimatePrice,f.jobOfferTittle FROM joboffers f left join jobs j on j.jobOfferId=f.jobOfferId WHERE j.jobId IS NULL and f.userId=?;",
+    scriptGetEmployerPendingJobs: "SELECT f.jobOfferId,f.jobOfferDescription,f.jobOfferDateAtCreate,f.jobOfferDateAtWork,f.jobOfferEstimatePrice,f.jobOfferTittle FROM joboffers f left join jobs j on j.jobOfferId=f.jobOfferId WHERE j.jobStatus = 0 and f.userId=?;",
+    scriptGetEmployerDoneJobs: "SELECT f.jobOfferId,f.jobOfferDescription,f.jobOfferDateAtCreate,f.jobOfferDateAtWork,f.jobOfferEstimatePrice,f.jobOfferTittle FROM joboffers f left join jobs j on j.jobOfferId=f.jobOfferId WHERE j.jobStatus = 1 and f.userId=?;",
+    scriptGetCommentsByEmployee: "SELECT commentId, senderId, commentCalification, commentMessage, commentDate, calificador.userName as senderName FROM comments c join users calificador on calificador.userId = c.senderId where c.commentRol='worker' and c.recipientId = ? order by c.commentDate DESC;",
+    scriptGetResumeComentsByEmployee: "SELECT COUNT(*) AS cantidadTotalComentariosEmployee, AVG(commentCalification) as mediaCalificaciones FROM comments c where c.commentRol='worker' and c.recipientId = ? group by recipientId;",
+    scriptGetUserTempData: "SELECT userTempDataActive, userTempDataLatitude, userTempDataLongitude, userTempDataDate as userTempDataLastUpdate FROM userstempdata where userId = ?;",
+    scrpitInsertStarterUserTempData: "INSERT INTO `userstempdata` (`userId`, `userTempDataLatitude`, `userTempDataLongitude`, `userTempDataActive`, `userTempDataDate`) VALUES (?, '0', '0', '0', NOW());",
+    scriptInsertLaborsToJobOffer: "INSERT INTO `jobofferslabors` ( `jobOfferId`, `laborId`) VALUES ?;",
+    scriptGetConversations: `SELECT 
+ t.desiredUserId,
+ t.messageText AS lastMessageText,
+ t.messageDate AS lastMessageDate
+FROM 
+ (SELECT 
+     n.desiredUserId,
+     MAX(n.messageDate) AS maxDate
+ FROM 
+     (SELECT 
+ um.messageId,
+ um.userId,
+ um.userId2,
+ CASE 
+     WHEN userId = ? THEN userId2
+     ELSE userId
+ END AS desiredUserId, m.messageDate, m.messageText
+FROM 
+ usersmessages um JOIN messages m ON m.messageId = um.messageId
+WHERE 
+ userId = ? OR userId2 = ? ORDER BY m.messageDate DESC) n
+ GROUP BY 
+     desiredUserId) AS maxDates
+INNER JOIN 
+ (SELECT 
+ um.messageId,
+ um.userId,
+ um.userId2,
+ CASE 
+     WHEN userId = ? THEN userId2
+     ELSE userId
+ END AS desiredUserId, m.messageDate, m.messageText
+FROM 
+ usersmessages um JOIN messages m ON m.messageId = um.messageId
+WHERE 
+ userId = ? OR userId2 = ? ORDER BY m.messageDate DESC) AS t ON t.desiredUserId = maxDates.desiredUserId AND t.messageDate = maxDates.maxDate;`,
+    scriptGetMessagesByConversation: "SELECT um.messageId,um.userId,um.userId2,m.messageDate,m.messageText FROM usersmessages um JOIN messages m on m.messageId = um.messageId WHERE (um.userId = ? AND um.userId2 = ?) or (um.userId = ? AND um.userId2 = ?) order by m.messageDate ASC;",
+    scriptInserComment: "INSERT INTO `messages` (`messageDate`, `messageText`) VALUES (NOW(), ?);",
+    scriptInsertCommentRelation: "INSERT INTO `usersmessages` (`messageId`, `userId`, `userId2`) VALUES (?, ?, ?);"
 }
