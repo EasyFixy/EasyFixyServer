@@ -24,8 +24,8 @@ module.exports.getUserProfile = (req, res) => {
                 console.log(err)
                 res.send({ statusCode: 400, message: "wrong user/password" })
             } else {
-                if (results) {
-                    //console.log(results)
+                if (results && results.length > 0) {
+                    console.log(results)
                     console.log("user")
                     user.mainData = results;
                     getSkills(user);
