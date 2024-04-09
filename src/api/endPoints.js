@@ -21,6 +21,7 @@ const { getJobDoneByEmployer } = require('../controllers/getJobDoneByEmployer')
 const { insertMessage } = require('../controllers/insertComment')
 const { getMessagesByConversation } = require('../controllers/gerMessagesByConversation')
 const { getConversations } = require('../controllers/getConversations')
+const { getBasicUserInfo } = require('../controllers/getBasicUserInfo')
 
 router.get('/userRegistration', userRegistration);
 router.get('/userLogin', userLogin);
@@ -35,6 +36,7 @@ router.get('/getJobPendingOffersByEmployer', getJobPendingOffersByEmployer);
 router.get('/getJobDoneByEmployer', getJobDoneByEmployer);
 router.get('/getMessagesByConversation', getMessagesByConversation);
 router.get('/getConversations', getConversations);
+router.get('/getBasicUserInfo', getBasicUserInfo);
 
 router.post('/createLaboralUserResume', createLaboralUserResume);
 router.post('/getLaborsPerCategories', getLaborsPerCategories);
