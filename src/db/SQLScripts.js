@@ -92,5 +92,15 @@ WHERE
  userId = ? OR userId2 = ? ORDER BY m.messageDate DESC) AS t ON t.desiredUserId = maxDates.desiredUserId AND t.messageDate = maxDates.maxDate;`,
     scriptGetMessagesByConversation: "SELECT um.messageId,um.userId,um.userId2,m.messageDate,m.messageText FROM usersmessages um JOIN messages m on m.messageId = um.messageId WHERE (um.userId = ? AND um.userId2 = ?) or (um.userId = ? AND um.userId2 = ?) order by m.messageDate ASC;",
     scriptInserComment: "INSERT INTO `messages` (`messageDate`, `messageText`) VALUES (NOW(), ?);",
-    scriptInsertCommentRelation: "INSERT INTO `usersmessages` (`messageId`, `userId`, `userId2`) VALUES (?, ?, ?);"
+    scriptInsertCommentRelation: "INSERT INTO `usersmessages` (`messageId`, `userId`, `userId2`) VALUES (?, ?, ?);",
+    scriptConsultaJobTittle: "SELECT jobOfferTittle FROM joboffers WHERE userId=? and jobOfferId=?;",
+    scriptConsultaInsertJob: "INSERT INTO `jobs` (`jobOfferId`, `userId`, `jobDate`, `jobStatus`, `jobPrice`) VALUES (?, ?, NOW(), '0', ?);",
+    scrpitUpdateJobOrderId: "UPDATE `jobs` SET `jobOrderId` = ? WHERE (`jobId` = ?);",
+    scriptGetJobPrice: "SELECT jobPrice FROM jobs WHERE jobId = ?;",
+    scriptInsertInvoice: "INSERT INTO `invoices` (`jobId`, `invoiceAmount`, `invoiceStatus`, `mercadoPagoPaymentId`) VALUES (?, ?, ?, ?);",
+    scriptPutJobToPaid: "UPDATE `jobs` SET `jobStatus` = '1' WHERE (`jobId` = ?);",
+    scriptUpdateJobStatus: "UPDATE `jobs` SET `jobStatus` = ? WHERE (`jobId` = ?);",
+    scriptIncrementUserMoneyFomJob: `UPDATE jobs j join users u on j.userId=u.userId
+    SET u.userMoney = u.userMoney + j.jobPrice
+    where j.jobId=?;`
 }
