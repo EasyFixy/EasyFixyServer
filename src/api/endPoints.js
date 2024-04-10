@@ -22,6 +22,9 @@ const { insertMessage } = require('../controllers/insertComment')
 const { getMessagesByConversation } = require('../controllers/gerMessagesByConversation')
 const { getConversations } = require('../controllers/getConversations')
 const { getBasicUserInfo } = require('../controllers/getBasicUserInfo')
+const { notificationMercadoPago } = require('../controllers/notificationMercadopago')
+const { createJob } = require('../controllers/createJob')
+const { updateJobStatus } = require('../controllers/updateJobStatus')
 
 router.get('/userRegistration', userRegistration);
 router.get('/userLogin', userLogin);
@@ -45,5 +48,8 @@ router.post('/getBestWorkersForLabors', getBestWorkersForLabors);
 router.post('/insertUserSkills', insertUserSkills);
 router.post('/createJobOffer', createJobOffer);
 router.post('/insertMessage', insertMessage);
+router.post('/notificationMercadoPago', notificationMercadoPago);
+router.post('/createJob', createJob);
+router.post('/updateJobStatus', updateJobStatus);
 
 module.exports = router;
