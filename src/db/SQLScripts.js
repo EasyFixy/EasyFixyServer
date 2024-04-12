@@ -102,5 +102,7 @@ WHERE
     scriptUpdateJobStatus: "UPDATE `jobs` SET `jobStatus` = ? WHERE (`jobId` = ?);",
     scriptIncrementUserMoneyFomJob: `UPDATE jobs j join users u on j.userId=u.userId
     SET u.userMoney = u.userMoney + j.jobPrice
-    where j.jobId=?;`
+    where j.jobId=?;`,
+    scriptInsertMessage: "INSERT INTO `messages` (`messageDate`, `messageText`) VALUES (NOW(), ?);",
+    scriptInsertUserMessageRelationship: "INSERT INTO `usersmessages` (`messageId`, `userId`, `userId2`) VALUES (?,?,?);"
 }
