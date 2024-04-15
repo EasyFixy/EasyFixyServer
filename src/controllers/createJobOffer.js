@@ -9,6 +9,8 @@ module.exports.createJobOffer = (req, res) => {
     const date_at_work = req.body.jobOfferDateAtWork
     const stimate_price = req.body.jobOfferStimatePrice
     const tittle = req.body.jobOfferTittle
+    const ubication = req.body.jobOfferUbication
+
     const token = req.body.token
     const labors = req.body.labors
 
@@ -17,7 +19,7 @@ module.exports.createJobOffer = (req, res) => {
 
     createOffer = (user) => {
         console.log(user)
-        dbConnection.query(consulta, [user.userId, job_offer_description, date_at_work, stimate_price, tittle], (err, results) => {
+        dbConnection.query(consulta, [user.userId, job_offer_description, date_at_work, stimate_price, tittle, ubication], (err, results) => {
             if (err) {
                 console.log(err)
                 res.send({ statusCode: 400, message: "wrong data" })
