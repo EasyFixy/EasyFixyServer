@@ -55,5 +55,9 @@ module.exports.chats =  (io) => {
             io.to(clientsPerSocket[msg.destinatary]).emit('chat message', { msg: msg.msg, username: socket.handshake.auth.userId });
             //io.emit('chat message', msg, username)
         })
+        socket.on('bid price', async (price) => {
+            console.log(price);
+            io.to(clientsPerSocket[price.destinatary]).emit('bid price', { price: price.price, username: socket.handshake.auth.userId });
+        })
     }
 }
