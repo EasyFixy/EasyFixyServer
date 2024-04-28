@@ -25,6 +25,7 @@ const { getBasicUserInfo } = require('../controllers/getBasicUserInfo')
 const { notificationMercadoPago } = require('../controllers/notificationMercadopago')
 const { createJob } = require('../controllers/createJob')
 const { updateJobStatus } = require('../controllers/updateJobStatus')
+const { createDispatch } = require('../controllers/createDispatch')
 
 router.get('/userRegistration', userRegistration);
 router.get('/userLogin', userLogin);
@@ -51,5 +52,6 @@ router.post('/insertMessage', insertMessage);
 router.post('/notificationMercadoPago', notificationMercadoPago);
 router.post('/createJob', createJob);
 router.post('/updateJobStatus', updateJobStatus);
+router.post('/createDispatch', createDispatch);
 
 module.exports = router;
