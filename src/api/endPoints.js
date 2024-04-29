@@ -18,7 +18,7 @@ const { insertUserSkills } = require('../controllers/insertUserSkills')
 const { getJobOffertedOffersByEmployer } = require('../controllers/getJobOffertedOffersByEmployer') 
 const { getJobPendingOffersByEmployer } = require('../controllers/getJobPendingOffersByEmployer')
 const { getJobDoneByEmployer } = require('../controllers/getJobDoneByEmployer')
-const { insertMessage } = require('../controllers/insertComment')
+const { insertComment } = require('../controllers/insertComment')
 const { getMessagesByConversation } = require('../controllers/gerMessagesByConversation')
 const { getConversations } = require('../controllers/getConversations')
 const { getBasicUserInfo } = require('../controllers/getBasicUserInfo')
@@ -48,7 +48,7 @@ router.post('/uploadUserSkills', uploadUserSkills);
 router.post('/getBestWorkersForLabors', getBestWorkersForLabors);
 router.post('/insertUserSkills', insertUserSkills);
 router.post('/createJobOffer', createJobOffer);
-router.post('/insertMessage', insertMessage);
+router.post('/insertComment', insertComment);
 router.post('/notificationMercadoPago', notificationMercadoPago);
 router.post('/createJob', createJob);
 router.post('/updateJobStatus', updateJobStatus);
