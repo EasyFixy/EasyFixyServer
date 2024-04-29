@@ -8,9 +8,11 @@ ejemplo llamada:
 http://localhost:3000/insertComment
 
 {
-    "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjMsImlhdCI6MTcxMjYwMDUyNCwiZXhwIjoxNzEyNzczMzI0fQ.niB84_11bd__DrhHbWKIUfLniWxW6JFvG0h1yWDF4BU",
-    "message": "la suya", 
-    "recipientId": 1
+    "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjMsImlhdCI6MTcxNDQwMjMwMiwiZXhwIjoxNzE0NTc1MTAyfQ.zGk2NI7Ux8quioL4Y-vvjEbV-znenAuzSUUqIgwU7MM",
+    "recipientId": 2,
+    "commentCalification": 1,
+    "commentMessage": "sadasdadadasdsad",
+    "commentRol": "employer"
 }
 
 */
