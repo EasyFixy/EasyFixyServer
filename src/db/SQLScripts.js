@@ -58,7 +58,8 @@ module.exports = {
     t.desiredUserId,
     t.messageText AS lastMessageText,
     t.messageDate AS lastMessageDate,
-    us.userName
+    us.userName,
+    t.userId as lastMessageSenderId
    FROM 
     (SELECT 
         n.desiredUserId,
