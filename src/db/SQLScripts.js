@@ -110,5 +110,6 @@ module.exports = {
     scriptCreateDispatch: "INSERT INTO `dispatches` (`userId`, `dispatchAmount`, `dispatchDate`, `dispatchStatus`) VALUES (?, ?, NOW(), '0')",
     scriptGetUserMoney: "SELECT userMoney FROM users where userId = ? LIMIT 1;",
     scriptGetUserSkills: "SELECT skillId,skillName FROM skills WHERE userId=?;",
-    scriptDeleteSkill: "DELETE FROM `skills` WHERE (`skillId` = ? and userId = ?);"
+    scriptDeleteSkill: "DELETE FROM `skills` WHERE (`skillId` = ? and userId = ?);",
+    scriptGetUserProfit: "SELECT SUM(jobPrice) AS totalProfit FROM jobs WHERE userId=? and jobStatus=1 GROUP BY userId LIMIT 1;"
 }
