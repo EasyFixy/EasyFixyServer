@@ -27,6 +27,7 @@ const { createJob } = require('../controllers/createJob')
 const { updateJobStatus } = require('../controllers/updateJobStatus')
 const { createDispatch } = require('../controllers/createDispatch')
 const { getUserSkills } = require('../controllers/getUserSkills')
+const { deleteSkill } = require('../controllers/deleteSkill')
 
 router.get('/userRegistration', userRegistration);
 router.get('/userLogin', userLogin);
@@ -43,6 +44,7 @@ router.get('/getMessagesByConversation', getMessagesByConversation);
 router.get('/getConversations', getConversations);
 router.get('/getBasicUserInfo', getBasicUserInfo);
 router.get('/getUserSkills', getUserSkills);
+router.get('/deleteSkill', deleteSkill);
 
 router.post('/createLaboralUserResume', createLaboralUserResume);
 router.post('/getLaborsPerCategories', getLaborsPerCategories);
