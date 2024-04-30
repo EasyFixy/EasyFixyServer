@@ -26,6 +26,7 @@ const { notificationMercadoPago } = require('../controllers/notificationMercadop
 const { createJob } = require('../controllers/createJob')
 const { updateJobStatus } = require('../controllers/updateJobStatus')
 const { createDispatch } = require('../controllers/createDispatch')
+const { getUserSkills } = require('../controllers/getUserSkills')
 
 router.get('/userRegistration', userRegistration);
 router.get('/userLogin', userLogin);
@@ -41,6 +42,7 @@ router.get('/getJobDoneByEmployer', getJobDoneByEmployer);
 router.get('/getMessagesByConversation', getMessagesByConversation);
 router.get('/getConversations', getConversations);
 router.get('/getBasicUserInfo', getBasicUserInfo);
+router.get('/getUserSkills', getUserSkills);
 
 router.post('/createLaboralUserResume', createLaboralUserResume);
 router.post('/getLaborsPerCategories', getLaborsPerCategories);

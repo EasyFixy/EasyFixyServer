@@ -107,5 +107,6 @@ module.exports = {
     scriptInsertMessage: "INSERT INTO `messages` (`messageDate`, `messageText`) VALUES (NOW(), ?);",
     scriptInsertUserMessageRelationship: "INSERT INTO `usersmessages` (`messageId`, `userId`, `userId2`) VALUES (?,?,?);",
     scriptCreateDispatch: "INSERT INTO `dispatches` (`userId`, `dispatchAmount`, `dispatchDate`, `dispatchStatus`) VALUES (?, ?, NOW(), '0')",
-    scriptGetUserMoney: "SELECT userMoney FROM users where userId = ? LIMIT 1;"
+    scriptGetUserMoney: "SELECT userMoney FROM users where userId = ? LIMIT 1;",
+    scriptGetUserSkills: "SELECT skillId,skillName FROM skills WHERE userId=?;"
 }
