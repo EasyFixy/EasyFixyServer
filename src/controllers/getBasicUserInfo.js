@@ -8,6 +8,7 @@ module.exports.getBasicUserInfo = (req, res) => {
 
     const user = {}
     user.userId = req.query.userId
+    console.log(user.userId);
 
     const consultaMainData = SQLScripts.scriptGetUserMainData
 
@@ -16,13 +17,13 @@ module.exports.getBasicUserInfo = (req, res) => {
         dbConnection.query(consultaMainData, [user.userId], (err, results) => {
             if (err) {
                 console.log(err)
-                res.send({ statusCode: 400, message: "wrong user/password" })
+                res.send({ statusCode: 400, message: "wrong user/password primer if" })
             } else {
                 if (results && results.length > 0) {
                     console.log(results)
                     res.json({ statusCode: 200, message: "modificado", data: results })
                 } else {
-                    res.json({ statusCode: 400, message: "wrong user/password" })
+                    res.json({ statusCode: 400, message: "wrong user/password s" })
                 }
             }
 
