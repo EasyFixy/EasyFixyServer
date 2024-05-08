@@ -31,6 +31,7 @@ const { deleteSkill } = require('../controllers/deleteSkill')
 const { getUserProfit } = require('../controllers/getUserProfit')
 const { getJobsPendingOfWorker } = require('../controllers/getJobsPendingOfWorker')
 const { getJobsDoneByWorker } = require('../controllers/getJobsDoneByWorker')
+const { getUserStatus } = require('../controllers/getUserStatus')
 
 router.get('/userRegistration', userRegistration);
 router.get('/userLogin', userLogin);
@@ -51,6 +52,8 @@ router.get('/deleteSkill', deleteSkill);
 router.get('/getUserProfit', getUserProfit);
 router.get('/getJobsPendingOfWorker', getJobsPendingOfWorker);
 router.get('/getJobsDoneByWorker', getJobsDoneByWorker);
+router.get('/getUserStatus', getUserStatus);
+
 
 router.post('/createLaboralUserResume', createLaboralUserResume);
 router.post('/getLaborsPerCategories', getLaborsPerCategories);
