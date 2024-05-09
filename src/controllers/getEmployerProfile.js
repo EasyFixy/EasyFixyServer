@@ -4,7 +4,7 @@ const SQLScripts = require('../db/SQLScripts')
 const loginValidator = require('../objects/loginValidator')
 const stringValidator = require('../objects/stringValidator')
 
-module.exports.getUserProfile = (req, res) => {
+module.exports.getEmployerProfile = (req, res) => {
 
     const user = {}
     user.userId = req.query.userId

@@ -93,7 +93,7 @@ module.exports = {
    FROM 
     usersmessages um JOIN messages m ON m.messageId = um.messageId
    WHERE 
-    userId = ? OR userId2 = ? ORDER BY m.messageDate DESC) AS t ON t.desiredUserId = maxDates.desiredUserId AND t.messageDate = maxDates.maxDate JOIN users as us on t.desiredUserId = us.userId;`,
+    userId = ? OR userId2 = ? ORDER BY m.messageDate DESC) AS t ON t.desiredUserId = maxDates.desiredUserId AND t.messageDate = maxDates.maxDate JOIN users as us on t.desiredUserId = us.userId GROUP BY desiredUserId,lastMessageText,lastMessageDate,userName,lastMessageSenderId;`,
     scriptGetMessagesByConversation: "SELECT um.messageId,um.userId,um.userId2,m.messageDate,m.messageText FROM usersmessages um JOIN messages m on m.messageId = um.messageId WHERE (um.userId = ? AND um.userId2 = ?) or (um.userId = ? AND um.userId2 = ?) order by m.messageDate ASC;",
     scriptInsertComment: "INSERT INTO `comments` (`senderId`, `recipientId`, `commentCalification`, `commentMessage`, `commentDate`, `commentRol`) VALUES (?, ?, ?, ?, NOW(), ?);",
     scriptInsertCommentRelation: "INSERT INTO `usersmessages` (`messageId`, `userId`, `userId2`) VALUES (?, ?, ?);",

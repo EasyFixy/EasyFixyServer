@@ -43,16 +43,23 @@ module.exports.chats =  (io) => {
 
     return async (socket) => {
         console.log('a user has connected! ', socket.handshake.auth.userId, socket.id)
+        io.to(clientsPerSocket[socket.handshake.auth.userId]).emit('notifiSocketChange', { id: socket.id});
         clientsPerSocket[socket.handshake.auth.userId] = socket.id
         console.log("Clientes que se encuentran en el socket",clientsPerSocket);
+
+        socket.on('connect', () => {
+            console.log("conectando")
+        })
+
         socket.on('disconnect', () => {
             delete clientsPerSocket[socket.handshake.auth.userId]; // <-- quitar del objeto el usuario cuando se desconecta
             console.log('an user has disconnected', socket.handshake.auth.userId)
         })
 
         socket.on('chat message', async (msg) => {
+            clientsPerSocket[socket.handshake.auth.userId] = msg.senderSocketId
             insertMessageToBD({ msg: msg.msg, username: socket.handshake.auth.userId, destinatary: msg.destinatary })
-
+            console.log("Clientes que se encuentran en el socket",clientsPerSocket);
             console.log({ msg: msg.msg, username: socket.handshake.auth.userId, d: msg.destinatary })
             io.to(clientsPerSocket[msg.destinatary]).emit('chat message', { msg: msg.msg, username: socket.handshake.auth.userId });
             //io.emit('chat message', msg, username)
@@ -60,6 +67,13 @@ module.exports.chats =  (io) => {
         socket.on('bid price', async (price) => {
             console.log(price);
             io.to(clientsPerSocket[price.destinatary]).emit('bid price', { price: price.price, username: socket.handshake.auth.userId });
+        })
+        socket.on('notifyEmployee', async (notification) => {
+            console.log("notificacion: "+notification);
+            io.to(clientsPerSocket[notification.destinatary]).emit('enterToBid', { employer: socket.handshake.auth.userId });
+        })
+        socket.on('acceptOffer', async (notification) => {
+            io.to(clientsPerSocket[notification.destinatary]).emit('employeeAccepted', { employee: socket.handshake.auth.userId });
         })
     }
 }
