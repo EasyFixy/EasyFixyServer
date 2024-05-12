@@ -41,9 +41,9 @@ module.exports = {
              sin(radians(utd.userTempDataLatitude)) * 
              sin(radians(?)) /*lat 2*/
          )
-     ) AS distanceKm, c.calificacionMedia, r.resumeTimeExperience, l.laborId FROM users as u join userstempdata as utd on utd.userId = u.userId join 
+     ) AS distanceKm, COALESCE(c.calificacionMedia, 2.5) as calificacionMedia, r.resumeTimeExperience, l.laborId FROM users as u join userstempdata as utd on utd.userId = u.userId LEFT join 
  (SELECT recipientId, avg(commentCalification) as calificacionMedia FROM comments where commentRol="worker" GROUP BY recipientId) as c on u.userId = c.recipientId join
- resumes as r on u.userId = r.userId join laborsresumes as l on l.resumeId = r.resumeId where l.laborId in (?) order by utd.userTempDataActive DESC) as firstData) as tableWithPonderatedValues GROUP BY tableWithPonderatedValues.userId
+ resumes as r on u.userId = r.userId join laborsresumes as l on l.resumeId = r.resumeId where l.laborId in (?) order by utd.userTempDataActive DESC) as firstData) as tableWithPonderatedValues WHERE tableWithPonderatedValues.userId != ? GROUP BY tableWithPonderatedValues.userId
  ORDER BY listingValue DESC;`,
     scriptInsertUserSkills: "INSERT INTO `skills` (`userId`, `skillName`) VALUES ?;",
     scriptGetEmployerOfertedOffers: "SELECT f.jobOfferId,f.jobOfferDescription,f.jobOfferDateAtCreate,f.jobOfferDateAtWork,f.jobOfferEstimatePrice,f.jobOfferTittle FROM joboffers f left join jobs j on j.jobOfferId=f.jobOfferId WHERE j.jobId IS NULL and f.userId=?;",
