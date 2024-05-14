@@ -16,7 +16,7 @@ module.exports.createJobOffer = (req, res) => {
 
     const consulta = SQLScripts.scriptInsertJobOffer
     const consultaInsertLabors = SQLScripts.scriptInsertLaborsToJobOffer
-
+    const response = {}
     createOffer = (user) => {
         console.log(user)
         dbConnection.query(consulta, [user.userId, job_offer_description, date_at_work, stimate_price, tittle, ubication], (err, results) => {
@@ -26,7 +26,8 @@ module.exports.createJobOffer = (req, res) => {
             } else {
                 if (results) {
                     console.log(results)
-                    insertLabors(results.insertId)
+                    response.jobOffer=results
+                    insertLabors(results.insertId, response)
                 } else {
                     res.json({ statusCode: 400, message: "wrong data" })
                 }
@@ -35,7 +36,7 @@ module.exports.createJobOffer = (req, res) => {
         })
     }
 
-    insertLabors = (insertId) => {
+    insertLabors = (insertId, response) => {
         console.log(insertId)
         const laboresInsert = labors.map(labor=> [insertId, labor]);
         console.log(laboresInsert)
@@ -46,7 +47,8 @@ module.exports.createJobOffer = (req, res) => {
             } else {
                 if (results) {
                     console.log(results)
-                    res.json({ statusCode: 200, message: "creado", data: results })
+                    response.labors = results
+                    res.json({ statusCode: 200, message: "creado", data: response })
                 } else {
                     res.json({ statusCode: 400, message: "wrong data" })
                 }
