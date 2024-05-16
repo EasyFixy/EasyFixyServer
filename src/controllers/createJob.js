@@ -89,9 +89,9 @@ module.exports.createJob = (req, res) => {
                 ],
                 metadata: { id: job.jobId },
                 back_urls: {
-                    failure: 'http://localhost:5173/',
-                    pending: 'http://localhost:5173/',
-                    success: 'http://localhost:5173/'
+                    failure: process.env.MERCADOPAGO_FRONT_RESPONSE_URL,
+                    pending: process.env.MERCADOPAGO_FRONT_RESPONSE_URL,
+                    success: process.env.MERCADOPAGO_FRONT_RESPONSE_URL
                 },
                 notification_url: process.env.NGROK_URL + "/notificationMercadoPago",
             }
