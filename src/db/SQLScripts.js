@@ -8,7 +8,7 @@ module.exports = {
     scriptCheckEmailRegistered: "SELECT count(userId) as cantidad FROM users where userEmail = ?;",
     scriptInsertJobOffer: "INSERT INTO `joboffers` (`userId`, `jobOfferDescription`, `jobOfferDateAtCreate`, `jobOfferDateAtWork`, `jobOfferEstimatePrice`, `jobOfferTittle`, `jobOfferUbication`) VALUES (?, ?, NOW(), ?, ?, ?, ?);",
     scriptGetLaborCategories: "SELECT laborCategoryId, laborCategoryName,laborCategoryIcon FROM laborcategories;",
-    scriptModifyUserInfo: "UPDATE `users` SET `userPhoneNumber` = ?, `userNationality` = ?, `userPrefixNational` = ? WHERE (`userId` = ?);",
+    scriptModifyUserInfo: "UPDATE `users` SET `userPhoneNumber` = ?, `userNationality` = ?, `userPrefixNational` = ?, `userName` = CASE WHEN ? <> '' THEN ? ELSE `userName` END WHERE (`userId` = ?);",
     scriptInsertResume: "INSERT INTO `resumes` (`userId`, `resumeDescription`, `resumeTimeExperience`, `resumeTitleLabor`) VALUES (?, ?, ?, ?);",
     scriptInsertLaborResumeRelationship: "INSERT INTO `laborsresumes` (`resumeId`, `laborId`) VALUES (?, ?);",
     scriptInsertUserSkill: "INSERT INTO `skills` (`userId`, `skillName`) VALUES (?, ?);",
