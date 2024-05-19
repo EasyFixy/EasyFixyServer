@@ -113,5 +113,12 @@ module.exports = {
     scriptGetUserMoney: "SELECT userMoney FROM users where userId = ? LIMIT 1;",
     scriptGetUserSkills: "SELECT skillId,skillName FROM skills WHERE userId=?;",
     scriptDeleteSkill: "DELETE FROM `skills` WHERE (`skillId` = ? and userId = ?);",
-    scriptGetUserProfit: "SELECT SUM(jobPrice) AS totalProfit FROM jobs WHERE userId=? and jobStatus=1 GROUP BY userId LIMIT 1;"
+    scriptGetUserProfit: "SELECT SUM(jobPrice) AS totalProfit FROM jobs WHERE userId=? and jobStatus=1 GROUP BY userId LIMIT 1;",
+    scriptGetJobOffer: "SELECT userId, jobOfferDescription, jobOfferDateAtCreate, jobOfferDateAtWork, jobOfferEstimatePrice, jobOfferTittle, jobOfferUbication FROM joboffers WHERE jobOfferId=?;",
+    scriptGEtPaymentInfoPerPrefId: `
+    SELECT J.jobId, j.jobOfferId, j.userId as employeeId, u.userName as employeeName, j.jobPrice, j.jobOrderId, o.jobOfferDescription, o.jobOfferTittle FROM jobs j 
+JOIN joboffers o on j.jobOfferId=o.jobOfferId 
+JOIN users u on u.userId = j.userId 
+WHERE j.jobOrderId LIKE ?;
+    `
 }
