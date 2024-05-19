@@ -6,9 +6,18 @@ const stringValidator = require('../objects/stringValidator')
 
 module.exports.modifyUserInfo = (req, res) => {
 
-    const phone_number = req.query.phone_number
-    const user_nationality = req.query.user_nationality
-    const user_prefix_national = req.query.user_prefix_national
+    let phone_number = req.query.phone_number
+    if(phone_number=='undefined'){
+        phone_number=0
+    }
+    let user_nationality = req.query.user_nationality
+    if(user_nationality=='undefined'){
+        user_nationality=''
+    }
+    let user_prefix_national = req.query.user_prefix_national
+    if(user_prefix_national=='undefined'){
+        user_prefix_national=''
+    }
     const name = req.query.name
     const token = req.query.token
     console.log("hola el nombre es: ",name);
@@ -16,8 +25,10 @@ module.exports.modifyUserInfo = (req, res) => {
     const consulta = SQLScripts.scriptModifyUserInfo
 
     createResume = (user) => {
-        console.log(user)
-        dbConnection.query(consulta, [phone_number, user_nationality, user_prefix_national, name, name, user.userId], (err, results) => {
+        console.log("prefijo: ",user_prefix_national)
+        console.log("numero: ",phone_number)
+        console.log("nacionalidad: ",user_nationality)
+        dbConnection.query(consulta, [phone_number, phone_number, user_nationality, user_nationality, user_prefix_national, user_prefix_national, name, name, user.userId], (err, results) => {
             if (err) {
                 console.log(err)
                 res.send({ statusCode: 400, message: "wrong user/password" })
