@@ -33,6 +33,8 @@ const { getJobsPendingOfWorker } = require('../controllers/getJobsPendingOfWorke
 const { getJobsDoneByWorker } = require('../controllers/getJobsDoneByWorker')
 const { getUserStatus } = require('../controllers/getUserStatus')
 const { getEmployerProfile } = require('../controllers/getEmployerProfile')
+const { getJobOffer } = require('../controllers/getJobOffer')
+const { getPaymentInfoPerReference } = require('../controllers/getPaymentInfoPerReference')
 
 router.get('/userRegistration', userRegistration);
 router.get('/userLogin', userLogin);
@@ -55,6 +57,8 @@ router.get('/getJobsPendingOfWorker', getJobsPendingOfWorker);
 router.get('/getJobsDoneByWorker', getJobsDoneByWorker);
 router.get('/getUserStatus', getUserStatus);
 router.get('/getEmployerProfile', getEmployerProfile);
+router.get('/getJobOffer', getJobOffer);
+router.get('/getPaymentInfoPerReference', getPaymentInfoPerReference);
 
 router.post('/createLaboralUserResume', createLaboralUserResume);
 router.post('/getLaborsPerCategories', getLaborsPerCategories);
