@@ -35,6 +35,8 @@ const { getUserStatus } = require('../controllers/getUserStatus')
 const { getEmployerProfile } = require('../controllers/getEmployerProfile')
 const { getJobOffer } = require('../controllers/getJobOffer')
 const { getPaymentInfoPerReference } = require('../controllers/getPaymentInfoPerReference')
+const { updateLaborUserResume } = require('../controllers/updateLaboralUserResume')
+const { updateUserResume } = require('../controllers/updateUserResume') 
 
 router.get('/userRegistration', userRegistration);
 router.get('/userLogin', userLogin);
@@ -71,5 +73,8 @@ router.post('/notificationMercadoPago', notificationMercadoPago);
 router.post('/createJob', createJob);
 router.post('/updateJobStatus', updateJobStatus);
 router.post('/createDispatch', createDispatch);
+router.post('/updateLaborUserResume', updateLaborUserResume);
+router.post('/updateUserResume', updateUserResume);
+
 
 module.exports = router;
