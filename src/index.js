@@ -14,7 +14,7 @@ const io = new Server(server, {
 })
 console.log("front: "+process.env.FRONT_URL)
 io.on('connection', chats(io))
-const port = process.env.SERVER_PORT
+const port = process.env.PORT
 
 const routes = require('./api/endPoints')
 const cors = require('cors');
