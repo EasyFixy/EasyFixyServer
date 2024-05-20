@@ -1,7 +1,8 @@
 const dbConnection = require('../db/dbConnection')
 const nodemailer = require('nodemailer');
 const SQLScripts  = require('../db/SQLScripts')
-
+const mysql = require('mysql')
+require('dotenv').config({ path: './../.env' })
 module.exports.sendResetMail = (req, res) => {
 
     const email = req.query.userEmail
@@ -93,7 +94,7 @@ module.exports.sendResetMail = (req, res) => {
             from: '"Olvido de contraseña" <easyfixy26@gmail.com>', // Tu dirección de correo electrónico
             to: email, // Correo electrónico del destinatario
             subject: 'Link de reestablecimiento de correo',
-            text: 'tiene 3 horas para acceder al siquiente link para reestablecer su contraseña http://localhost:5701/newPassword?id='+id+'&tempPass='+tempPass
+            text: 'tiene 3 horas para acceder al siquiente link para reestablecer su contraseña '+ process.env.FRONT_URL+'/newPassword?id='+id+'&tempPass='+tempPass
         };
 
         // Enviar el correo electrónico
