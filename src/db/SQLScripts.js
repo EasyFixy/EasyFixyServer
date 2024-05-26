@@ -123,5 +123,22 @@ module.exports = {
 JOIN joboffers o on j.jobOfferId=o.jobOfferId 
 JOIN users u on u.userId = j.userId 
 WHERE j.jobOrderId LIKE ?;
-    `
+    `,
+    scriptGetJobUsersInfo: `SELECT j.jobId, 
+    j.userId employeeId, 
+    o.userId employerId, 
+    employee.userName employeeName, 
+    employer.userName employerName,
+    commentsEmployee.promedio calificacionMediaEmpleado,
+    commentsEmployee.cantidadComentarios cantidadComentariosEmpleado,
+    commentsEmployer.promedio calificacionMediaEmpleador,
+    commentsEmployer.cantidadComentarios cantidadComentariosEmpleador
+ FROM jobs j JOIN joboffers o on j.jobOfferId = o.jobOfferId JOIN users employee ON j.userId=employee.userId JOIN users employer ON o.userId=employer.userId 
+ LEFT JOIN 
+(SELECT recipientId, AVG(commentCalification) promedio, COUNT(*) cantidadComentarios FROM comments where commentRol = 'worker' GROUP BY recipientId)
+commentsEmployee ON commentsEmployee.recipientId = j.userId
+LEFT JOIN 
+(SELECT recipientId, AVG(commentCalification) promedio, COUNT(*) cantidadComentarios FROM comments where commentRol = 'employer' GROUP BY recipientId)
+commentsEmployer ON commentsEmployer.recipientId = o.userId
+WHERE j.jobId = ? LIMIT 1;`
 }
