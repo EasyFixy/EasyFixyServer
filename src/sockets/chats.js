@@ -76,7 +76,7 @@ module.exports.chats =  (io) => {
             if(clientIsBusy[notification.destinatary]==true){
                 io.to(clientsPerSocket[socket.handshake.auth.userId]).emit('employeeIsBusy', { employee: notification.destinatary });
             }else{
-                io.to(clientsPerSocket[notification.destinatary]).emit('enterToBid', { employer: socket.handshake.auth.userId });
+                io.to(clientsPerSocket[notification.destinatary]).emit('enterToBid', { employer: socket.handshake.auth.userId, inicialPriceValue:notification.inicialPriceValue });
                 clientIsBusy[notification.destinatary]=true
             }
         })
